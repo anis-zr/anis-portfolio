@@ -68,7 +68,7 @@ export const About: React.FC = () => {
             <div className="p-4 rounded-xl glass-card">
               <Server className="w-5 h-5 text-emerald-500 mb-2" />
               <h4 className="font-bold text-sm text-slate-900 dark:text-white">Backend & APIs</h4>
-              <p className="text-xs text-slate-500 mt-1">REST APIs, business logic, and authentication.</p>
+              <p className="text-xs text-slate-500 mt-1">REST APIs, GRAPHE QL, business logic</p>
             </div>
             <div className="p-4 rounded-xl glass-card">
               <Database className="w-5 h-5 text-amber-500 mb-2" />

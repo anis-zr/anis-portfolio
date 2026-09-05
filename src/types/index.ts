@@ -1,3 +1,9 @@
+export interface ProjectVideo {
+  title: string;
+  url: string;
+  description?: string;
+}
+
 export interface Project {
   id: string;
   title: string;
@@ -9,6 +15,7 @@ export interface Project {
   features: string[];
   screenshots: string[];
   demoVideo?: string | null;
+  videos?: (ProjectVideo | string)[];
   liveDemo?: string | null;
   github?: string | null;
 }

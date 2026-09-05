@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { 
-  ArrowLeft, 
-  ExternalLink, 
-  Github, 
-  Play, 
-  CheckCircle2, 
+import {
+  ArrowLeft,
+  ExternalLink,
+  Github,
+  Play,
+  CheckCircle2,
   Sparkles,
-  Monitor
+  Monitor,
+  Film
 } from 'lucide-react';
 import { projects } from '../data/projects';
 import { WhatsAppIcon } from '../components/ui/WhatsAppIcon';
@@ -15,6 +16,7 @@ import { getWhatsAppUrl } from '../data/profile';
 import { Badge } from '../components/ui/Badge';
 import { Button } from '../components/ui/Button';
 import { ProjectGallery } from '../components/ProjectGallery/ProjectGallery';
+import { ProjectVideoSection } from '../components/ProjectVideo/ProjectVideoSection';
 import { VideoModal } from '../components/VideoPlayer/VideoModal';
 import { animatePageIn } from '../animations/pageTransitions';
 
@@ -22,8 +24,19 @@ export const ProjectDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const pageRef = useRef<HTMLDivElement>(null);
   const [videoModalOpen, setVideoModalOpen] = useState(false);
+  const [selectedVideoIndex, setSelectedVideoIndex] = useState(0);
 
-  const project = projects.find((p) => p.id === id);
+  const decodedId = id ? decodeURIComponent(id).trim() : '';
+  const project = projects.find((p) => {
+    const pId = p.id.trim();
+    return (
+      pId === id ||
+      pId === decodedId ||
+      pId.toLowerCase() === decodedId.toLowerCase() ||
+      pId.toLowerCase().replace(/\s+/g, '-') === decodedId.toLowerCase().replace(/\s+/g, '-') ||
+      encodeURIComponent(pId) === id
+    );
+  });
 
   useEffect(() => {
     animatePageIn(pageRef.current);
@@ -47,6 +60,30 @@ export const ProjectDetails: React.FC = () => {
 
   const hasScreenshots = project.screenshots && project.screenshots.length > 0;
   const mainImage = hasScreenshots ? project.screenshots[0] : null;
+
+  const allVideos = React.useMemo(() => {
+    const list: { title: string; url: string; description?: string }[] = [];
+    if (project.videos && project.videos.length > 0) {
+      project.videos.forEach((v, idx) => {
+        if (typeof v === 'string') {
+          if (v && v.trim() !== '') {
+            list.push({ title: `Demo Video ${idx + 1}`, url: v });
+          }
+        } else if (v && v.url && v.url.trim() !== '') {
+          list.push({
+            title: v.title || `Demo Video ${idx + 1}`,
+            url: v.url,
+            description: v.description,
+          });
+        }
+      });
+    } else if (project.demoVideo && project.demoVideo.trim() !== '') {
+      list.push({ title: `${project.title} Demo`, url: project.demoVideo });
+    }
+    return list;
+  }, [project.videos, project.demoVideo, project.title]);
+
+  const hasVideos = allVideos.length > 0;
 
   return (
     <div ref={pageRef} className="pt-28 pb-24 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -76,21 +113,26 @@ export const ProjectDetails: React.FC = () => {
           {project.title}
         </h1>
 
-        <p className="text-lg sm:text-xl text-slate-600 dark:text-slate-300 leading-relaxed max-w-3xl">
-          {project.description}
-        </p>
+        {project.description && (
+          <p className="text-lg sm:text-xl text-slate-600 dark:text-slate-300 leading-relaxed max-w-3xl">
+            {project.description}
+          </p>
+        )}
 
         {/* Quick Action Bar (Video, Live Demo, GitHub) */}
         <div className="flex flex-wrap items-center gap-3 pt-2">
-          {project.demoVideo && (
+          {hasVideos && (
             <Button
-              onClick={() => setVideoModalOpen(true)}
+              onClick={() => {
+                setSelectedVideoIndex(0);
+                setVideoModalOpen(true);
+              }}
               variant="primary"
               size="md"
               icon={<Play className="w-4 h-4 fill-white" />}
               iconPosition="left"
             >
-              Watch Demo
+              {allVideos.length > 1 ? `Watch Demos (${allVideos.length})` : 'Watch Demo'}
             </Button>
           )}
 
@@ -147,14 +189,16 @@ export const ProjectDetails: React.FC = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mb-14">
         <div className="md:col-span-2 space-y-8">
           {/* Overview */}
-          <div>
-            <h2 className="text-2xl font-bold font-display text-slate-900 dark:text-white mb-4">
-              Project Overview
-            </h2>
-            <p className="text-base text-slate-600 dark:text-slate-300 leading-relaxed">
-              {project.overview}
-            </p>
-          </div>
+          {project.overview && (
+            <div>
+              <h2 className="text-2xl font-bold font-display text-slate-900 dark:text-white mb-4">
+                Project Overview
+              </h2>
+              <p className="text-base text-slate-600 dark:text-slate-300 leading-relaxed">
+                {project.overview}
+              </p>
+            </div>
+          )}
 
           {/* Key Features */}
           {project.features && project.features.length > 0 && (
@@ -207,7 +251,15 @@ export const ProjectDetails: React.FC = () => {
         </div>
       </div>
 
-      {/* 4. Interactive Screenshot Gallery */}
+      {/* 4. Interactive Cinema Video Showcase */}
+      {hasVideos && (
+        <ProjectVideoSection
+          videos={allVideos}
+          projectTitle={project.title}
+        />
+      )}
+
+      {/* 5. Interactive Screenshot Gallery */}
       {hasScreenshots && (
         <ProjectGallery
           screenshots={project.screenshots}
@@ -215,7 +267,7 @@ export const ProjectDetails: React.FC = () => {
         />
       )}
 
-      {/* 5. Bottom Navigation */}
+      {/* 6. Bottom Navigation */}
       <div className="mt-16 pt-8 border-t border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
         <Button
           to="/projects"
@@ -240,9 +292,10 @@ export const ProjectDetails: React.FC = () => {
       </div>
 
       {/* Demo Video Modal */}
-      {project.demoVideo && (
+      {hasVideos && (
         <VideoModal
-          videoSrc={project.demoVideo}
+          videos={allVideos}
+          initialIndex={selectedVideoIndex}
           title={project.title}
           isOpen={videoModalOpen}
           onClose={() => setVideoModalOpen(false)}

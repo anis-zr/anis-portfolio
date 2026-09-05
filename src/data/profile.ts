@@ -18,9 +18,9 @@ export const profile: ProfileData = {
   whatsapp: "+213770731096", // Placeholder: Replace with your international WhatsApp phone number (e.g. +213..., +1..., +33...)
   whatsappDefaultMessage: "Hi Anis, I found your portfolio and would like to discuss a project.",
 
-  github: "https://github.com/yourusername", // Secondary link
+  github: "https://github.com/anis-zr", // Secondary link
   linkedin: "https://linkedin.com/in/yourusername", // Secondary link
-  upwork: "https://upwork.com/freelancers/~yourprofile", // Secondary link
+  upwork: "https://www.upwork.com/freelancers/~017b153c8db89b40c5?mp_source=share", // Secondary link
   socialLinks: []
 };
 

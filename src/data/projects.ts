@@ -1,25 +1,14 @@
-export interface Project {
-  id: string;
-  title: string;
-  category: string;
-  description: string;
-  overview: string;
-  role: string;
-  technologies: string[];
-  features: string[];
-  screenshots: string[]; // paths to screenshots relative to public dir
-  demoVideo: string | null; // path to video or null
-  liveDemo: string | null; // URL or null
-  github: string | null; // URL or null
-}
+import { Project, ProjectVideo } from '../types';
+
+export type { Project, ProjectVideo };
 
 export const projects: Project[] = [
   {
-    id: "restaurant-scolaire",
-    title: "Restaurant Scolaire Management System",
+    id: "gestion-de-vente",
+    title: "Gestion de Vente",
     category: "Desktop Application / Full-Stack",
-    description: "A complete desktop management application designed for a school restaurant.",
-    overview: "This application streamlines the daily operations of a school restaurant, handling everything from product and supplier management to detailed consumption tracking. Designed with offline capabilities, it provides a robust and reliable solution for inventory and reporting without relying on a continuous internet connection.",
+    description: "Application de bureau moderne et complète pour la gestion des ventes, des stocks, des fournisseurs et de la facturation.",
+    overview: "Cette application simplifie la gestion quotidienne des activités commerciales : suivi des ventes et achats, gestion des stocks en temps réel, génération de rapports et factures PDF. Conçue avec une architecture moderne, elle garantit performance, robustesse et fonctionnement fluide en mode hors-ligne.",
     role: "Frontend / Full-Stack Development",
     technologies: [
       "React",
@@ -29,17 +18,61 @@ export const projects: Project[] = [
       "SQLite"
     ],
     features: [
-      "Product management",
-      "Supplier management",
-      "Purchases tracking",
-      "Consumption tracking",
-      "Stock management",
-      "CRUD operations",
-      "PDF reports generation",
-      "Offline database support"
+      "Gestion des produits et du catalogue",
+      "Gestion des clients et fournisseurs",
+      "Suivi des ventes et achats en temps réel",
+      "Gestion avancée des stocks et alertes",
+      "Opérations CRUD rapides et sécurisées",
+      "Génération et impression de factures & rapports PDF",
+      "Base de données locale hors-ligne (Offline support)"
     ],
-    screenshots: [],
+    screenshots: ["/projects/img2.jpg"],
     demoVideo: null,
+    // قائمة الفيديوهات
+    videos: [
+      {
+        title: "Full Project Showcase & Walkthrough",
+        url: "/projects/gestionv.mp4",
+        description: "عرض شامل للنظام ولوحة التحكم والوظائف الأساسية"
+      }
+    ],
+    liveDemo: null,
+    github: null
+  },
+
+  {
+    id: "plateforme-agritech",
+    title: "Plateforme Agritech",
+    category: "Web Application / Full-Stack",
+    description: "Plateforme web innovante dédiée au secteur agricole (AgriTech) facilitant la gestion, le suivi des cultures et les interactions producteurs-clients.",
+    overview: "Une solution web full-stack développée pour moderniser la gestion agricole. Elle intègre un tableau de bord dynamique, des animations fluides avec GSAP, et une interface utilisateur moderne avec Shadcn UI pour offrir une expérience utilisateur intuitive et performante.",
+    role: "Full-Stack Development",
+    technologies: [
+      "React",
+      "Express.js",
+      "MongoDB",
+      "GSAP",
+      "Shadcn UI",
+      "Node.js"
+    ],
+    features: [
+      "Tableau de bord interactif pour le suivi agricole",
+      "Gestion des données et analytics des cultures",
+      "API REST sécurisée avec Node.js et Express",
+      "Base de données NoSQL évolutive avec MongoDB",
+      "Animations interactives et fluides avec GSAP",
+      "Design moderne et responsive avec Shadcn UI & Tailwind CSS"
+    ],
+    screenshots: ["/projects/img1.jpg"],
+    demoVideo: null,
+    // قائمة الفيديوهات
+    videos: [
+      {
+        title: "Full Project Showcase & Walkthrough",
+        url: "/projects/video1.mp4",
+        description: "عرض شامل للنظام ولوحة التحكم والوظائف الأساسية"
+      }
+    ],
     liveDemo: null,
     github: null
   }

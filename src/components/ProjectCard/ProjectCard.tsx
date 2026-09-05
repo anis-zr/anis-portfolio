@@ -67,9 +67,12 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project, featured = fa
           </div>
 
           {/* Video indicator if demo video exists */}
-          {project.demoVideo && (
-            <div className="absolute bottom-3 right-3 p-2 rounded-xl bg-brand-600/90 text-white backdrop-blur-md shadow-md">
-              <Play className="w-3.5 h-3.5 fill-white" />
+          {Boolean(project.demoVideo || (project.videos && project.videos.length > 0)) && (
+            <div className="absolute bottom-3 right-3 px-2 py-1.5 rounded-xl bg-brand-600/90 text-white backdrop-blur-md shadow-md flex items-center gap-1 text-xs font-semibold">
+              <Play className="w-3 h-3 fill-white" />
+              {project.videos && project.videos.length > 1 && (
+                <span>{project.videos.length} Videos</span>
+              )}
             </div>
           )}
         </Link>
