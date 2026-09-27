@@ -39,7 +39,7 @@ export const Hero: React.FC = () => {
           <p className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-800 dark:text-slate-100">
             Full-Stack Developer
           </p>
-          <div className="flex items-center justify-center gap-2 text-base sm:text-lg font-medium text-slate-600 dark:text-slate-300">
+          <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 text-sm sm:text-base md:text-lg font-medium text-slate-600 dark:text-slate-300">
             <span>Web</span>
             <span className="text-brand-500 font-bold">•</span>
             <span>Mobile</span>
@@ -59,6 +59,7 @@ export const Hero: React.FC = () => {
             to="/projects"
             size="lg"
             variant="primary"
+            className="w-full sm:w-auto"
             icon={<ArrowRight className="w-4 h-4" />}
           >
             View My Work
@@ -69,6 +70,7 @@ export const Hero: React.FC = () => {
             rel="noopener noreferrer"
             size="lg"
             variant="secondary"
+            className="w-full sm:w-auto"
             icon={<WhatsAppIcon className="w-4 h-4 fill-emerald-500" />}
             iconPosition="left"
           >

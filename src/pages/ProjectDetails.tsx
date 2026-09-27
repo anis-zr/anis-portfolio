@@ -129,6 +129,7 @@ export const ProjectDetails: React.FC = () => {
               }}
               variant="primary"
               size="md"
+              className="w-full sm:w-auto"
               icon={<Play className="w-4 h-4 fill-white" />}
               iconPosition="left"
             >
@@ -142,6 +143,7 @@ export const ProjectDetails: React.FC = () => {
               target="_blank"
               variant="secondary"
               size="md"
+              className="w-full sm:w-auto"
               icon={<ExternalLink className="w-4 h-4" />}
             >
               Live Demo
@@ -154,6 +156,7 @@ export const ProjectDetails: React.FC = () => {
               target="_blank"
               variant="outline"
               size="md"
+              className="w-full sm:w-auto"
               icon={<Github className="w-4 h-4" />}
             >
               GitHub
@@ -256,6 +259,10 @@ export const ProjectDetails: React.FC = () => {
         <ProjectVideoSection
           videos={allVideos}
           projectTitle={project.title}
+          onOpenModal={(index) => {
+            setSelectedVideoIndex(index);
+            setVideoModalOpen(true);
+          }}
         />
       )}
 
@@ -268,10 +275,11 @@ export const ProjectDetails: React.FC = () => {
       )}
 
       {/* 6. Bottom Navigation */}
-      <div className="mt-16 pt-8 border-t border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div className="mt-16 pt-8 border-t border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4">
         <Button
           to="/projects"
           variant="secondary"
+          className="w-full sm:w-auto"
           icon={<ArrowLeft className="w-4 h-4" />}
           iconPosition="left"
         >
@@ -283,7 +291,7 @@ export const ProjectDetails: React.FC = () => {
           target="_blank"
           rel="noopener noreferrer"
           variant="primary"
-          className="bg-emerald-600 hover:bg-emerald-500 shadow-emerald-500/20 text-white font-semibold"
+          className="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-500 shadow-emerald-500/20 text-white font-semibold"
           icon={<WhatsAppIcon className="w-4 h-4 fill-white" />}
           iconPosition="left"
         >

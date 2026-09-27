@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 import gsap from 'gsap';
 
@@ -31,6 +32,7 @@ export const Lightbox: React.FC<LightboxProps> = ({
     };
 
     window.addEventListener('keydown', handleKeyDown);
+    const originalOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
 
     // Smooth entrance
@@ -40,7 +42,7 @@ export const Lightbox: React.FC<LightboxProps> = ({
 
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
-      document.body.style.overflow = '';
+      document.body.style.overflow = originalOverflow;
     };
   }, [isOpen, currentIndex, images.length, onClose, onNavigate]);
 
@@ -54,15 +56,15 @@ export const Lightbox: React.FC<LightboxProps> = ({
     }
   }, [currentIndex, isOpen]);
 
-  if (!isOpen || images.length === 0) return null;
+  if (!isOpen || images.length === 0 || typeof document === 'undefined') return null;
 
-  return (
+  return createPortal(
     <div
       ref={overlayRef}
       role="dialog"
       aria-modal="true"
       aria-label="Image Lightbox Preview"
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-md p-4 sm:p-6 select-none"
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-md p-4 sm:p-6 select-none"
       onClick={onClose}
     >
       {/* Top Bar: Counter & Close */}
@@ -119,6 +121,7 @@ export const Lightbox: React.FC<LightboxProps> = ({
           <ChevronRight className="w-6 h-6" />
         </button>
       )}
-    </div>
+    </div>,
+    document.body
   );
 };

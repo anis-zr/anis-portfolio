@@ -18,11 +18,13 @@ import { VideoModal } from '../VideoPlayer/VideoModal';
 interface ProjectVideoSectionProps {
   videos: ProjectVideo[];
   projectTitle: string;
+  onOpenModal?: (index: number) => void;
 }
 
 export const ProjectVideoSection: React.FC<ProjectVideoSectionProps> = ({
   videos,
   projectTitle,
+  onOpenModal,
 }) => {
   // Filter only valid videos with non-empty URLs
   const validVideos = videos.filter((v) => v.url && v.url.trim() !== '');
@@ -38,6 +40,14 @@ export const ProjectVideoSection: React.FC<ProjectVideoSectionProps> = ({
   const videoRef = useRef<HTMLVideoElement>(null);
 
   const activeVideo = validVideos[activeIndex] || validVideos[0];
+
+  const handleOpenTheater = () => {
+    if (onOpenModal) {
+      onOpenModal(activeIndex);
+    } else {
+      setModalOpen(true);
+    }
+  };
 
   useEffect(() => {
     if (videoRef.current) {
@@ -219,7 +229,7 @@ export const ProjectVideoSection: React.FC<ProjectVideoSectionProps> = ({
 
                 <div className="flex items-center gap-2">
                   <button
-                    onClick={() => setModalOpen(true)}
+                    onClick={handleOpenTheater}
                     className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/10 hover:bg-brand-500 text-white font-medium transition-all text-xs"
                     title="Open Full Cinema Theater Mode"
                   >
@@ -327,7 +337,7 @@ export const ProjectVideoSection: React.FC<ProjectVideoSectionProps> = ({
 
           {/* Quick Cinema Launch button */}
           <button
-            onClick={() => setModalOpen(true)}
+            onClick={handleOpenTheater}
             className="mt-2 w-full py-3 px-4 rounded-xl bg-gradient-to-r from-brand-600 to-emerald-600 hover:from-brand-500 hover:to-emerald-500 text-white font-semibold text-xs shadow-lg shadow-brand-500/20 flex items-center justify-center gap-2 transition-all hover:shadow-brand-500/40 hover:-translate-y-0.5"
           >
             <Maximize2 className="w-4 h-4" />
@@ -336,14 +346,16 @@ export const ProjectVideoSection: React.FC<ProjectVideoSectionProps> = ({
         </div>
       </div>
 
-      {/* Pop-up VideoModal in Theater Mode */}
-      <VideoModal
-        videos={validVideos}
-        initialIndex={activeIndex}
-        title={projectTitle}
-        isOpen={modalOpen}
-        onClose={() => setModalOpen(false)}
-      />
+      {/* Pop-up VideoModal in Theater Mode (fallback when no parent controller provided) */}
+      {!onOpenModal && (
+        <VideoModal
+          videos={validVideos}
+          initialIndex={activeIndex}
+          title={projectTitle}
+          isOpen={modalOpen}
+          onClose={() => setModalOpen(false)}
+        />
+      )}
     </section>
   );
 };

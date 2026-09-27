@@ -3,7 +3,11 @@ import gsap from 'gsap';
 export const init3DTilt = (card: HTMLElement | null, inner: HTMLElement | null) => {
   if (!card || !inner) return () => {};
 
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  // Only enable 3D tilt if reduced motion is disabled and device supports true hover/mouse pointer
+  if (
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
+    !window.matchMedia('(hover: hover) and (pointer: fine)').matches
+  ) {
     return () => {};
   }
 
